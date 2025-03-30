@@ -10,7 +10,7 @@ class HTMLNode():
     
     def props_to_html(self):
         if self.props == None:
-            pass
+            return ""
         
         if self.props == {}:
             return ""
@@ -25,18 +25,22 @@ class HTMLNode():
         return f"HTMLNode(tag={self.tag}, value={self.value}, children={self.children}, props={str(self.props)})"
 
 class LeafNode(HTMLNode):
-    def __init__(self, tag, value, children=None, props=None):
-        super(LeafNode, self).__init__()
-        self.tag = tag
-        self.value = value
+    def __init__(self, tag, value, props=None):
+        super().__init__(tag, value, None, props)
         
     def to_html(self):
-        if self.value == None:
-            raise ValueError()
+        if not self.value:
+            raise ValueError("LeafNode must have value")
         
         if self.tag == None:
             return self.value
         
-        return f'<{self.tag}>{self.value}</{self.tag}>'
+        html_props = self.props_to_html()
+        if html_props:    
+            return f'<{self.tag}{html_props}>{self.value}</{self.tag}>'
+        else:
+            return f'<{self.tag}>{self.value}</{self.tag}>'
+        
+        
         
         
