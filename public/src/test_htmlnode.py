@@ -80,6 +80,13 @@ class TestHTMLNode(unittest.TestCase):
         #print(node.__repr__())
         self.assertEqual(node.to_html(), "<a href=\"https://www.google.com\">Click me!</a>")
         
+    def test_leaf_to_html_special(self):
+        node = LeafNode("div", "Chicken & Waffles")
+        self.assertEqual(node.to_html(), "<div>Chicken & Waffles</div>")
+    
+    def test_leaf_to_html_multiple(self):
+        node = LeafNode("input", "", {"type": "text", "id": "username", "placeholder": "Enter username"})
+        self.assertEqual(node.to_html(), '<input type=\"text\" id=\"username\" placeholder=\"Enter username\"></input>')
     
 if __name__ == "__main__":
     unittest.main()
