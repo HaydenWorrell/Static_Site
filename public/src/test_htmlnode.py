@@ -114,6 +114,16 @@ class TestHTMLNode(unittest.TestCase):
             "<div><span><b>grandchild</b><p>grandchild2</p>grandchild3<i>grandchild4</i></span></div>",
         )
         
+    def test_parent_to_html_props(self):
+        child_node1 = LeafNode("a", "child node 1", {"href": "https://boot.dev", "class": "button"})
+        child_node2 = LeafNode("span", "Hello")
+        parent_node = ParentNode("div", [child_node1, child_node2], {"id": "container", "class": "wrapper"})
+        self.assertEqual(
+            parent_node.to_html(),
+            "<div id=\"container\" class=\"wrapper\"><a href=\"https://boot.dev\" class=\"button\">child node 1</a><span>Hello</span></div>"
+        )
+        
+        
     def test_parent_to_html_notag(self):
         child = LeafNode("p", "child")
         node = ParentNode(None, [child])
