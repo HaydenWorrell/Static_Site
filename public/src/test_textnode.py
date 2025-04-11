@@ -2,6 +2,7 @@ import unittest
 
 from textnode import TextNode, TextType
 from html_converter import text_node_to_html_node
+from split_nodes import split_nodes_delimiter
 
 
 class TestTextNode(unittest.TestCase):
@@ -72,6 +73,74 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(html_node.tag, "img")
         self.assertEqual(html_node.value, '')
         self.assertEqual(html_node.props, {'src': 'https://www.boot.dev', 'alt': 'This is a text node'})       
+     
+    def test_split_code(self):
+        node = TextNode("This is text with a `code block` word", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], TextType.CODE)
         
+        self.assertEqual([
+                            TextNode("This is text with a ", TextType.TEXT),
+                            TextNode("code block", TextType.CODE),
+                            TextNode(" word", TextType.TEXT)
+                         ], 
+                         
+                         new_nodes
+        )
+        
+    def test_split_bold(self):
+        node = TextNode("This is text with a **BOLD** word", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], TextType.BOLD)
+        
+        self.assertEqual([
+                            TextNode("This is text with a ", TextType.TEXT),
+                            TextNode("BOLD", TextType.BOLD),
+                            TextNode(" word", TextType.TEXT)
+                         ], 
+                         
+                         new_nodes
+        )        
+        
+    def test_split_italic(self):
+        node = TextNode("This is text with an _italic_ word", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node], TextType.ITALIC)
+        
+        self.assertEqual([
+                            TextNode("This is text with an ", TextType.TEXT),
+                            TextNode("italic", TextType.ITALIC),
+                            TextNode(" word", TextType.TEXT)
+                         ], 
+                         
+                         new_nodes
+        )
+        
+    def test_split_multiple(self):
+        node1 = TextNode("This is text with an _italic_ word", TextType.TEXT)
+        node2 = TextNode("This is a generic node", TextType.ITALIC)
+        node3 = TextNode("This is text with more _italic_ words", TextType.TEXT)
+        new_nodes = split_nodes_delimiter([node1, node2, node3], TextType.ITALIC)
+        
+        self.assertEqual([
+                            TextNode("This is text with an ", TextType.TEXT),
+                            TextNode("italic", TextType.ITALIC),
+                            TextNode(" word", TextType.TEXT),
+                            TextNode("This is a generic node", TextType.ITALIC),
+                            TextNode("This is text with more ", TextType.TEXT),
+                            TextNode("italic", TextType.ITALIC),
+                            TextNode(" words", TextType.TEXT)
+                         ], 
+                         
+                         new_nodes
+        )
+        
+    def test_split_no_delimiter(self):
+        node = TextNode("This is bold text without a delimiter", TextType.TEXT)
+        with self.assertRaises(ValueError):
+            split_nodes_delimiter([node], TextType.BOLD)
+    
+    def test_split_one_delimiter(self):
+        node = TextNode("This is bold text with only **one delimiter", TextType.TEXT)
+        with self.assertRaises(ValueError):
+            split_nodes_delimiter([node], TextType.BOLD)
+    
 if __name__ == "__main__":
     unittest.main()
