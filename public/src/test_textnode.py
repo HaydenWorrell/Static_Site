@@ -85,7 +85,7 @@ class TestTextNode(unittest.TestCase):
                          ], 
                          
                          new_nodes
-        )
+                        )
         
     def test_split_bold(self):
         node = TextNode("This is text with a **BOLD** word", TextType.TEXT)
@@ -98,7 +98,7 @@ class TestTextNode(unittest.TestCase):
                          ], 
                          
                          new_nodes
-        )        
+                        )        
         
     def test_split_italic(self):
         node = TextNode("This is text with an _italic_ word", TextType.TEXT)
@@ -111,7 +111,7 @@ class TestTextNode(unittest.TestCase):
                          ], 
                          
                          new_nodes
-        )
+                        )
         
     def test_split_multiple(self):
         node1 = TextNode("This is text with an _italic_ word", TextType.TEXT)
@@ -130,7 +130,7 @@ class TestTextNode(unittest.TestCase):
                          ], 
                          
                          new_nodes
-        )
+                        )
         
     def test_split_no_delimiter(self):
         node = TextNode("This is bold text without a delimiter", TextType.TEXT)

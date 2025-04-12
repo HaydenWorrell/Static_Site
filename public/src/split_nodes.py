@@ -3,9 +3,10 @@ from textnode import TextNode, TextType
 
 def split_nodes_delimiter(old_nodes, text_type):
     new_nodes = []
-    delimiter_map = {TextType.CODE: "`",
-                     TextType.ITALIC: "_",
-                     TextType.BOLD: "**",
+    delimiter_map = {
+                        TextType.CODE: "`",
+                        TextType.ITALIC: "_",
+                        TextType.BOLD: "**",
                     }
     
     delimiter = delimiter_map.get(text_type, '')

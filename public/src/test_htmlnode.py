@@ -3,9 +3,10 @@ import unittest
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
 class TestHTMLNode(unittest.TestCase):
-#    props_input1 = {"href": "https://www.google.com", "target": "_blank"}
     
-#    test_node1 = HTMLNode(None, None, None, props_input1)
+    
+    # props_to_html() functionality testing
+    
     
     def test_prop_base(self):
         props_input = {"href": "https://www.google.com", "target": "_blank"}
@@ -60,38 +61,62 @@ class TestHTMLNode(unittest.TestCase):
         actual_output = test_node.props_to_html()
         
         self.assertEqual(expected_output, actual_output)
-        
+    
+    
+    # leaf_to_html() functionality testing
+    
+            
     def test_leaf_to_html_p(self):
         node = LeafNode("p", "Hello, world!")
-        self.assertEqual(node.to_html(), "<p>Hello, world!</p>")
+        self.assertEqual(
+            node.to_html(), 
+            "<p>Hello, world!</p>"
+        )            
+            
+    def test_leaf_to_html_no_tag(self):
+        node = LeafNode(None, "Hello world!")
+        self.assertEqual(
+            node.to_html(), 
+            "Hello world!"
+        )
         
+    def test_leaf_to_html_a(self):
+        node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
+        self.assertEqual(
+            node.to_html(), 
+            "<a href=\"https://www.google.com\">Click me!</a>"
+        )
+        
+    def test_leaf_to_html_special(self):
+        node = LeafNode("div", "Chicken & Waffles")
+        self.assertEqual(
+            node.to_html(), 
+            "<div>Chicken & Waffles</div>"
+        )
+    
+    def test_leaf_to_html_multiple(self):
+        node = LeafNode("input", "", {"type": "text", "id": "username", "placeholder": "Enter username"})
+        self.assertEqual(
+            node.to_html(), 
+            '<input type=\"text\" id=\"username\" placeholder=\"Enter username\"></input>'
+        )
+
     def test_leaf_to_html_no_value(self):
         node = LeafNode("p", None)
         with self.assertRaises(ValueError):
             node.to_html()
-            
-    def test_leaf_to_html_no_tag(self):
-        node = LeafNode(None, "Hello world!")
-        self.assertEqual(node.to_html(), "Hello world!")
-        
-    def test_leaf_to_html_a(self):
-        #props = {"href": "https://www.google.com"}
-        node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
-        #print(node.__repr__())
-        self.assertEqual(node.to_html(), "<a href=\"https://www.google.com\">Click me!</a>")
-        
-    def test_leaf_to_html_special(self):
-        node = LeafNode("div", "Chicken & Waffles")
-        self.assertEqual(node.to_html(), "<div>Chicken & Waffles</div>")
     
-    def test_leaf_to_html_multiple(self):
-        node = LeafNode("input", "", {"type": "text", "id": "username", "placeholder": "Enter username"})
-        self.assertEqual(node.to_html(), '<input type=\"text\" id=\"username\" placeholder=\"Enter username\"></input>')
+    
+    # parent_to_html() functionality testing
+    
     
     def test_parent_to_html_with_children(self):
         child_node = LeafNode("span", "child")
         parent_node = ParentNode("div", [child_node])
-        self.assertEqual(parent_node.to_html(), "<div><span>child</span></div>")
+        self.assertEqual(
+            parent_node.to_html(), 
+            "<div><span>child</span></div>"
+        )
 
     def test_parent_to_html_with_grandchild(self):
         grandchild_node = LeafNode("b", "grandchild")
@@ -123,7 +148,6 @@ class TestHTMLNode(unittest.TestCase):
             "<div id=\"container\" class=\"wrapper\"><a href=\"https://boot.dev\" class=\"button\">child node 1</a><span>Hello</span></div>"
         )
         
-        
     def test_parent_to_html_notag(self):
         child = LeafNode("p", "child")
         node = ParentNode(None, [child])
@@ -139,10 +163,7 @@ class TestHTMLNode(unittest.TestCase):
         node = ParentNode("div", [])
         with self.assertRaises(ValueError):
             node.to_html()
+            
     
 if __name__ == "__main__":
     unittest.main()
-    
-    
-#LeafNode("a", "Click me!", {"href": "https://www.google.com"}).to_html()
-#"<a href="https://www.google.com">Click me!</a>"
