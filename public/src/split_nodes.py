@@ -18,10 +18,12 @@ def split_nodes_delimiter(old_nodes, text_type):
             continue
 
         if delimiter not in node.text:
-            raise ValueError(f"Delimiter not present in node: {node.__repr__()}")
+            new_nodes.append(node)
+            continue
 
         if node.text.count(delimiter) != 2:
-            raise ValueError(f"Delimiter only present once in node: {node.__repr__()}")
+            new_nodes.append(node)
+            continue
 
         original_text = node.text
         text_list = original_text.split(delimiter, 2)

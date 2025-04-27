@@ -147,16 +147,6 @@ class TestTextNode(unittest.TestCase):
             ],
             new_nodes,
         )
-
-    def test_split_no_delimiter(self):
-        node = TextNode("This is bold text without a delimiter", TextType.TEXT)
-        with self.assertRaises(ValueError):
-            split_nodes_delimiter([node], TextType.BOLD)
-
-    def test_split_one_delimiter(self):
-        node = TextNode("This is bold text with only **one delimiter", TextType.TEXT)
-        with self.assertRaises(ValueError):
-            split_nodes_delimiter([node], TextType.BOLD)
     
             
     #Test functionality of split_nodes_image()
